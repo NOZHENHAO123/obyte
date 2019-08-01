@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from '@/libs/util'
+import { getToken, Layer } from '@/libs/util'
 import config from '@/config'
 import Cookies from 'js-cookie'
 
@@ -31,11 +31,9 @@ class HttpRequest {
       config.headers.Authorization = getToken()
       // 添加全局的loading...
       if (!Object.keys(this.queue).length) {
-        // Spin.show() // 不建议开启，因为界面不友好
+        // Spin.show() 
       }
       this.queue[url] = true
-      // console.log(config)
-      // console.log('config')
       return config
     }, error => {
       return Promise.reject(error)
@@ -46,21 +44,13 @@ class HttpRequest {
       // const { data, status } = res
       const { data } = res
       if (data && data.code !== 100) {
-        // 后端服务在个别情况下回报201，待确认
+        Layer(data.msg + '~')
         if (data.code === 401) {
-          // Message.destroy()
-          // Message.error(data.message)
           Cookies.remove('user')
           Cookies.remove('token')
           Cookies.remove('key')
-          // setTimeout(() => {
-          //   window.location.href = '/login'
-          // }, 1500)
         } else {
-          // if (data.message) {
-          //   Message.destroy()
-          //   Message.error(data.message)
-          // }
+
         }
         return false
       } else {

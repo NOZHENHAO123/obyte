@@ -8,6 +8,9 @@
     </span>
     <span class="center">{{title.text}}</span>
     <span @click="handleNavRight" v-if="title.rightText" class="right">{{title.rightText}}</span>
+    <span @click="handleNavRight" v-if="title.historyIcon" class="right">
+      <img src="../assets/hashrate-history.png" alt="">
+    </span>
   </div>
 </template>
 
@@ -26,7 +29,8 @@ export default {
   },
   methods: {
     handleNavLeft () {
-      this.$emit('handleNavLeft')
+      this.$router.go(-1)
+      // this.$emit('handleNavLeft')
     },
     handleNavRight () {
       this.$emit('handleNavRight')
@@ -41,7 +45,7 @@ export default {
   top: 0;
   left: 0;
   padding: 0 0.31rem;
-  width: 100%;
+  width: 6.88rem;
   height: 0.8rem;
   line-height: 0.8rem;
   font-size: 0.24rem;
@@ -60,15 +64,22 @@ export default {
   display: inline-block
 }
 .nav-content .left {
-  width: 10%;
+  width: 15%;
 }
 .nav-content .center {
-  width: 70%;
+  width: 65%;
   text-align: center;
   font-size: 0.32rem;
 }
 .nav-content .right {
   width: 20%;
+  text-align: right
+}
+.right img {
+  /* float: right; */
+  position: relative;
+  top: 0.01rem;
+  width: 0.27rem
 }
 .colorYellow {
   color: #FEE7B3!important;

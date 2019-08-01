@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <TabNav v-if="titleData.text" :title="titleData"></TabNav>
+    <!-- <TabNav v-if="titleData.text" :title="titleData"></TabNav> -->
     <div class="banner">
       <div class="title">
         <p>本期剩余产出</p>
@@ -17,7 +17,7 @@
           <li>流通总量：{{MineInfoData.circulateAccount | formatNumberRgx}}</li>
           <li>已销毁总量：{{MineInfoData.destroyAccount | formatNumberRgx}}</li>
         </ul>
-        <img class="unfold" src="../assets/unfold.png" alt="">
+        <img @click="$router.push({name: 'mine-details'})" class="unfold" src="../assets/unfold.png" alt="">
       </div>
     </div>
     <div class="content">
@@ -28,15 +28,15 @@
         <Hashrate :hashrateData="hashrateData" v-if="tab === 0"></Hashrate>
         <Initiate :InitiateData="InitiateData" v-else></Initiate>
     </div>
-    <BottomNav></BottomNav>
+    <!-- <BottomNav></BottomNav> -->
   </div>
 </template>
 
 <script>
 // 头部导航
-import TabNav from '@/components/nav.vue'
+// import TabNav from '@/components/nav.vue'
 // 底部导航
-import BottomNav from '@/components/BottomNav.vue'
+// import BottomNav from '@/components/BottomNav.vue'
 // 算力节点
 import Hashrate from '@/components/Hashrate.vue'
 // 创始节点
@@ -46,6 +46,7 @@ export default {
   name: 'node',
   data () {
     return {
+      canShowMine: false, // 是否显示矿场详情
       tab: 0, // 0:算力节点 1：创始节点
       hashrateData: [], // 算力节点数据
       InitiateData: [], // 创始节点数据
@@ -59,9 +60,9 @@ export default {
   },
   components: {
     Hashrate,
-    Initiate,
-    TabNav,
-    BottomNav
+    Initiate
+    // TabNav
+    // BottomNav
   },
   created() {
     this.getHashrateListData()
@@ -123,7 +124,7 @@ export default {
 }
 .title {
   position: relative;
-  top: 1.45rem;
+  top: 0.65rem;
   margin: 0 auto 0;
   padding: 0.54rem 0.52rem 0;
   width: 5.8rem;

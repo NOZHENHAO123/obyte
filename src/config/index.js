@@ -8,6 +8,6 @@ export default {
    */
   baseUrl: {
     dev: 'http://lcp.talkingcake.cn',
-    pro: 'http://120.26.201.102:9090'
+    pro: 'http://lcp.talkingcake.cn'
   }
 }

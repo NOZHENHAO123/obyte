@@ -7,6 +7,42 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>obyte</title>
   </head>
+  <script>
+    // ;!function(pkg, undefined){ //此声明函数在xback.js文件里有，在app.js里必须再声明一次，不然监听返回事件失败
+    //   var STATE = 'x-back';
+    //   var element;
+
+    //   var onPopState = function(event){
+    //       event.state === STATE && fire();
+    //       record(STATE);  //初始化事件时，push一下
+    //   }
+
+    //   var record = function(state){
+    //       history.pushState(state, null, location.href);
+    //   }
+
+    //   var fire = function(){
+    //       var event = document.createEvent('Events');
+    //       event.initEvent(STATE, false, false);
+    //       element.dispatchEvent(event);
+    //   }
+
+    //   var listen = function(listener){
+    //       element.addEventListener(STATE, listener, false);
+    //   }
+
+    //   !function(){
+    //       element = document.createElement('span');
+    //       window.addEventListener('popstate', onPopState);
+    //       this.listen = listen;
+    //       record(STATE);  
+    //   }.call(window[pkg] = window[pkg] || {});
+    //   window.XBack = XBack;
+    // }('XBack');
+    // XBack.listen(function(){
+    //   alert('oh! you press the back button');
+    // });
+  </script>
   <body>
     <noscript>
       <strong>We're sorry but obyte doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>

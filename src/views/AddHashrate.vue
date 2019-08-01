@@ -5,12 +5,16 @@
       <p>节点名称：{{detailData.nodeName}}</p>
       <p>节点地址：{{detailData.nodeAddress}}</p>
     </div>
-    <div class="content">
+    <!-- <div class="content">
       <h3>算力</h3>
       <input placeholder="输入算力数量" id="number" type="text">
       <label class="number-desc" for="number">LCP</label>
       <p class="balance">可用余额：{{detailData.nodeAccount}}</p>
       <p class="submit">投入</p>
+    </div> -->
+    <div class="hashrate">
+      <p>扫描下方二维码增加算力</p>
+      <img :src="qrData.qrCodeURL" alt="">
     </div>
   </div>
 </template>
@@ -26,6 +30,7 @@ export default {
   data () {
     return {
       detailData: {}, // 详情数据
+      qrData: {}, // 二维码
       titleData: {
         imgSrc: 'nav-icon02.png',
         text: '增加算力',  // 导航居中文本
@@ -39,6 +44,7 @@ export default {
   },
   created () {
     this.getDetail()
+    this.getQRcode()
   },
   methods: {
     handleNavLeft () {  // 返回
@@ -49,6 +55,11 @@ export default {
         nodeId: GetUrlParam('id')
       }).then(res => {
         this.detailData = res.node
+      })
+    },
+    getQRcode () {  // 获取二维码
+      this.$api.post('api/node/addressQRCode', {nodeId: GetUrlParam('id')}).then(res => {
+        this.qrData = res.data
       })
     },
   }
@@ -69,7 +80,8 @@ export default {
     font-weight: 500
   }
   .content input {
-    width: 100%;
+    padding-right: 1rem;
+    width: 85%;
     height: 0.5rem;
     line-height: 0.5rem;
     font-size: 0.32rem;
@@ -117,5 +129,19 @@ export default {
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+  }
+  .hashrate p {
+    margin: 0.89rem 0 0.59rem;
+    width: 100%;
+    height: 0.26rem;
+    line-height: 0.26rem;
+    font-size: 0.26rem;
+    color: #333;
+    text-align: center
+  }
+  .hashrate img {
+    margin: 0 auto;
+    width: 2.89rem;
+    height: 2.89rem
   }
 </style>

@@ -1,16 +1,17 @@
 <template>
   <div class="container">
+    <TabNav @handleNavLeft="handleNavLeft" @handleNavRight="handleNavRight" v-if="titleData.text" :title="titleData"></TabNav>
     <div class="desc">
       <p>矿产剩余总量(LCP)</p>
-      <p>500,376,200</p>
+      <p>{{infoData.totalBalance | formatNumberRgx}}</p>
     </div>
     <div class="desc">
-      <p>矿产剩余总量(LCP)</p>
-      <p>500,376,200</p>
+      <p>本期剩余产出(LCP)</p>
+      <p>{{infoData.balanceRest | formatNumberRgx}}</p>
     </div>
     <div class="desc">
-      <p>矿产剩余总量(LCP)</p>
-      <p>500,376,200</p>
+      <p>本期结束时间</p>
+      <p>{{infoData.endTime | intercepting}}</p>
     </div>
     <div class="content">
       <h5>下期预计产出</h5>
@@ -19,20 +20,8 @@
         <span>预计产出</span>
       </p>
       <ul class="message">
-        <li>
-          <p class="clearfix"><span>2020/05/01-2021/04/30</span><span>20,000</span></p>
-        </li>
-        <li>
-          <p class="clearfix"><span>2020/05/01-2021/04/30</span><span>20,000</span></p>
-        </li>
-        <li>
-          <p class="clearfix"><span>2020/05/01-2021/04/30</span><span>20,000</span></p>
-        </li>
-        <li>
-          <p class="clearfix"><span>2020/05/01-2021/04/30</span><span>20,000</span></p>
-        </li>
-        <li>
-          <p class="clearfix"><span>2020/05/01-2021/04/30</span><span>20,000</span></p>
+        <li v-for="(item, index) in minePlanProductListData" :key="index">
+          <p class="clearfix"><span>{{item.startTime | intercepting}}-{{item.endTime | intercepting}}</span><span>{{item.planProduct | formatNumberRgx}}</span></p>
         </li>
       </ul>
     </div>
@@ -40,15 +29,75 @@
 </template>
 
 <script>
+// 头部导航
+import TabNav from '@/components/nav.vue'
+
 // 矿场详情
 export default {
-  name: 'initiate'
+  name: 'initiate',
+  data () {
+    return {
+      infoData: {}, // 详情数据
+      minePlanProductListData: [],  // 计划列表数据
+      titleData: {  // 导航
+        imgSrc: 'nav-icon02.png',
+        text: '矿场',  // 导航居中文本
+        leftText: '返回', // 导航左文本
+        rightText: '钱包查询', // 导航左文本
+        textColor: 'yellow', // 导航颜色
+      }
+    }
+  },
+  components: {
+    TabNav
+  },
+  filters: {
+    intercepting (val) {  // 截取时间
+      if (val) {
+        return val.slice(0,10).replace(/-/g, "/")
+      } else {
+        return val
+      }
+    },
+    formatNumberRgx(num) { // 数字添加千分号
+      if (num) {
+        var parts = num.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+      } else {
+        return num
+      }
+    }
+  },
+  created () {
+    this.getMinePlanList()
+    this.getInfoData()
+  },
+  methods: {
+    handleNavLeft () {  // 返回
+      this.$router.go(-1)
+    },
+    handleNavRight () { // 查询钱包（暂未定）
+
+    },
+    getInfoData () {  // 详情
+      this.$api.post('api/mine/mineInfo').then(res => {
+        this.infoData = res.info
+      })
+    },
+    getMinePlanList () { // 获取矿产生产计划列表数据
+      this.$api.post('api/mine/listPlanProduct').then(res => {
+        this.minePlanProductListData = res.minePlanProductList
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
   .container {
-    padding: 0.16rem 0.31rem 0;
+    /* padding: 0.16rem 0.31rem 0; */
+    padding: 0.96rem 0.31rem 0;
     min-height: 100vh;
     overflow: hidden;
     background: #F2F3F5

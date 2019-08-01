@@ -3,33 +3,41 @@
     <TabNav @handleNavLeft="handleNavLeft" v-if="titleData.text" :title="titleData"></TabNav>
     <div class="desc">
       <p class="clearfix">
-        <span>节点名称：{{nodeInfoData.nodeName}}</span>
-        <span>节点排名：{{nodeInfoData.sort}}</span>
+        <span>节点名称：{{nodeInfoData.currentNode.nodeName}}</span>
+        <span>节点排名：{{nodeInfoData.currentNode.sort}}</span>
       </p>
       <p class="margintop clearfix">
-        <span>节点得票数：{{nodeInfoData.voteAccount}}</span>
-        <span>加成比例：{{nodeInfoData.nodeAddrate}}%</span>
+        <span>节点得票数：{{nodeInfoData.currentNode.voteAccount}}</span>
+        <span>加成比例：{{nodeInfoData.currentNode.nodeAddrate}}%</span>
       </p>
       <p class="margintop clearfix">
-        <span>距第1名节点票数：45.29</span>
-        <span>第1名节点加成：20%</span>
+        <span>距上1名节点票数：{{nodeInfoData.difference}}</span>
+        <span>上1名节点加成：{{nodeInfoData.previousNode.nodeAddrate}}%</span>
       </p>
       <p class="margintop clearfix">
-        <span>第1名节点预计产出：321</span>
+        <span>上1名节点预计产出：{{nodeInfoData.previousNodeExpectedOutput}}</span>
       </p>
     </div>
-    <div class="content">
+    <!-- <div class="content">
       <h3>投票</h3>
       <input placeholder="输入投票数量" id="number" type="text">
       <label class="number-desc" for="number">LCP</label>
-      <p class="balance">可用余额：10.000000000000</p>
+      <p class="balance">可用余额：{{nodeInfoData.totalBalance}}</p>
       <p class="submit">投票</p>
+    </div> -->
+    <div class="copy">
+      <h3>点击复制投票地址到发送页面进行投票</h3>
+      <div class="copy-content" @click="handleCopy">
+        <img src="../assets/copy.png" alt="">
+        <input ref="copy" type="text" :value="nodeInfoData.currentNode.nodeAddress">
+        <!-- <p class="copy-mask">modao.cc/app/f710e3ce322d11dc66d85390f023b2bb#screen</p> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { GetUrlParam } from '@/libs/util'
+import { GetUrlParam, Layer } from '@/libs/util'
 // 头部导航
 import TabNav from '@/components/nav.vue'
 // 投票
@@ -54,12 +62,17 @@ export default {
   },
   methods: {
     getNodeInfo () { // 获取节点详情
-      this.$api.post('api/node/calculateNodeDetial', {nodeId: GetUrlParam('id')}).then(res => {
-        this.nodeInfoData = res.node
+      this.$api.post('api/node/calculateNodeAndLast', {nodeId: GetUrlParam('id'), userId: '3'}).then(res => {
+        this.nodeInfoData = res.所有信息
       })
     },
     handleNavLeft () { // 返回
       this.$router.go(-1)
+    },
+    handleCopy () { // 复制
+      this.$refs.copy.select()
+      document.execCommand("Copy")
+      Layer('复制成功')
     }
   }
 }
@@ -127,4 +140,55 @@ export default {
     float: right;
     width: 3.27rem;
   }
+  .copy {
+    font-size: 0.26rem;
+    color: #333;
+    overflow: hidden
+  }
+  .copy h3 {
+    margin: 0.63rem 0 0.37rem;
+    width: 100%;
+    height: 0.26rem;
+    line-height: 0.26rem;
+    font-weight: 500;
+    text-align: center
+  }
+  .copy .copy-content {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.3rem 0 0.4rem
+  }
+  .copy .copy-content img {
+    position: relative;
+    top: 0.08rem;
+    width: 0.3rem;
+    height: 0.33rem
+  }
+  .copy .copy-content input {
+    width: 6.29rem;
+    height: 0.49rem;
+    line-height: 0.49rem;
+    border-radius: 5px;
+    background: #FAFAFA;
+    border: 1px solid #EEEEEE;
+    text-indent: 0.2rem;
+    font-size: 0.2rem;
+    color: #666;
+    /* opacity: 0; */
+  }
+  /* .copy-mask {
+    position: absolute;
+    top: 0.01rem;
+    right: 0.3rem;
+    width: 6.29rem;
+    height: 0.49rem;
+    line-height: 0.49rem;
+    border-radius: 5px;
+    background: #FAFAFA;
+    border: 1px solid #EEEEEE;
+    text-indent: 0.2rem;
+    font-size: 0.2rem;
+    color: #666;
+  } */
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click="skipDetail(item.nodeId)" v-for="(item, index) in InitiateData" :key="index" class="message">
+    <div @click="skipDetail(item.nodeId)" v-for="(item, index) in InitiateData" :key="index" class="message" :class="{messageMagintop: index>0}">
       <ul class="clearfix">
         <li class="detail">
           <p>{{item.nodeAddress}}<span>锁定数量：{{item.nodeAccount}}</span></p>
@@ -21,7 +21,6 @@ export default {
   name: 'initiate',
   props: ['InitiateData'],
   mounted () {
-    console.log(this.InitiateData)
   },
   methods: {
     /**
@@ -40,9 +39,11 @@ export default {
     text-align: left
   }
   .message {
-    width: 100%;
+    margin: 0 auto;
+    width: 92%;
     height: 1.4rem;
     border-bottom: 1px solid #F2F3F5;
+    border-radius: 5px;
     background: #fff
   }
   .styleColor {
@@ -59,9 +60,13 @@ export default {
     text-align: left;
   }
   .message .detail p:nth-child(1) {
-    min-width: 4.5rem;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-width: 4.5rem;
     color: #333;
-    font-size: 0.26rem
+    font-size: 0.26rem;
   }
   .message .detail p:nth-child(1) span {
     float: right;
@@ -73,10 +78,7 @@ export default {
   }
   .message .desc {
     width: 4.5rem;
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .vote {
     float: right!important;
@@ -91,5 +93,8 @@ export default {
   .vote>p:nth-child(2) {
     color: #666666;
     font-size: 0.24rem
+  }
+  .messageMagintop {
+    margin-top: 0.18rem
   }
 </style>

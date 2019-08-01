@@ -1,9 +1,35 @@
 <template>
   <div id="app">
     <router-view/>
+    <div id="layer" style="display:none;position:fixed;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0)">
+      <div style="margin: 50vh auto 0;display:flex;justify-content:center">
+        <span id="layerText" style="padding: 0 0.2rem;max-width:100%;background:rgba(0,0,0,0.7);color:#fff;height:0.7rem;line-height:0.7rem;border-radius:5px;z-index:999;text-align:center;font-size:0.35rem;"></span>
+      </div>
+    </div>
   </div>
 </template>
 
+<script>
+// import { nativeMethods } from '@/libs/util.js'
+
+export default {
+  name: 'app',
+  components: {
+  },
+  data () {
+    return {
+    }
+  },
+  created () {
+    // let _this = this;
+    // XBack.listen(function(){
+    //   _this.$router.go(-1)
+    // });
+  },
+  methods: {
+  }
+}
+</script>
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

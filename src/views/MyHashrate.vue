@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <TabNav @handleNavLeft="handleNavLeft" v-if="titleData.text" :title="titleData"></TabNav>
+    <TabNav @handleNavLeft="handleNavLeft" @handleNavRight="handleNavRight" v-if="titleData.text" :title="titleData"></TabNav>
     <div class="title">
-      <p>今日产币</p>
+      <p>今日产币 (LCP)</p>
       <p>{{hashrateInfoData.user.todayIncome}}</p>
     </div>
     <div class="content">
@@ -11,34 +11,14 @@
         <span>共计：{{hashrateInfoData.totalHasdrete}}</span>
       </p>
       <ul>
-        <li v-for="(item, index) in HashrateHistoryList">
+        <li v-for="(item, index) in HashrateHistoryList" :key="index">
           <p class="clearfix">
             <span>增加算力</span>
-            <span>+293</span>
+            <span>+{{item.算力}}</span>
           </p>
           <p class="clearfix">
-            <span>2019/05/09 12:30</span>
-            <span>审核中</span>
-          </p>
-        </li>
-        <li>
-          <p class="clearfix">
-            <span>增加算力</span>
-            <span>+293</span>
-          </p>
-          <p class="clearfix">
-            <span>2019/05/09 12:30</span>
-            <span>审核中</span>
-          </p>
-        </li>
-        <li>
-          <p class="clearfix">
-            <span>增加算力</span>
-            <span>+293</span>
-          </p>
-          <p class="clearfix">
-            <span>2019/05/09 12:30</span>
-            <span>审核中</span>
+            <span>{{item.增加时间}}</span>
+            <!-- <span>审核中</span> -->
           </p>
         </li>
       </ul>
@@ -49,6 +29,7 @@
         <span @click="handleAdd">增加算力</span>
       </p>
     </div>
+    <MineDetails v-if="canShowMine"></MineDetails>
   </div>
 </template>
 
@@ -67,6 +48,7 @@ export default {
         text: '我的算力',  // 导航居中文本
         leftText: '返回', // 导航左文本
         textColor: 'yellow', // 导航颜色
+        historyIcon: true
       },
       hashrateInfoData: {}, // 算力详情
       HashrateHistoryList: [] // 算力记录列表
@@ -83,6 +65,9 @@ export default {
     handleNavLeft () { // 返回
       this.$router.go(-1)
     },
+    handleNavRight () { // 跳往增加算力记录
+      this.$router.push({name: 'add-hashrate-history', query: {id: GetUrlParam('id')}})
+    },
     handleRedeem () { // 跳往赎回
       this.$router.push({name: 'redemption', query: {id: GetUrlParam('id')}})
     },
@@ -97,10 +82,10 @@ export default {
       })
     },
     getHashRateHistory () { // 获取算力记录
-      this.$api.post('api/user/HashrateList',{
-        userId: '1'
+      this.$api.post('api/user/userHashrateRecord',{
+        userId: '2'
       }).then(res => {
-        this.HashrateHistoryList = res.invertRecordList
+        this.HashrateHistoryList = res.用户全部增加算力
       })
     }
   }
@@ -114,6 +99,7 @@ export default {
     background: #F2F3F5 
   }
   .title {
+    margin-top: 0.8rem;
     width: 100%;
     height: 3.31rem;
     color: #FEE7B3;
@@ -125,7 +111,7 @@ export default {
     text-align: center
   }
   .title p:nth-child(1) {
-    margin-top: 1.55rem;
+    margin-top: 0.75rem;
     font-size: 0.26rem;
     height: 0.26rem;
     line-height: 0.26rem

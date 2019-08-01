@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: [
     { // 算力
       path: '/',
@@ -43,6 +43,11 @@ export default new Router({
       path: '/add-hashrate',
       name: 'add-hashrate',
       component: () => import(/* webpackChunkName: "node" */ './views/AddHashrate.vue')
+    },
+    { // 增加算力记录
+      path: '/add-hashrate-history',
+      name: 'add-hashrate-history',
+      component: () => import(/* webpackChunkName: "node" */ './views/AddHashrateHistory.vue')
     }
   ]
 })

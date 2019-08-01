@@ -37,3 +37,18 @@ export const GetUrlParam = paraName => {
     return '';
   }
 }
+/**
+ * 提醒框
+ */
+export const Layer = val => {
+  let layer = document.getElementById('layer'),
+  layerText = document.getElementById('layerText');
+
+  layer.style.display = 'block'
+  layerText.innerText = val
+  
+  setTimeout(function(){
+    layer.style.display = 'none'
+  },1000)
+}
+

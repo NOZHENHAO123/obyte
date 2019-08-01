@@ -107,6 +107,7 @@ export default {
     background: #F2F3F5 
   }
   .user {
+    margin-top: 0.8rem;
     width: 100%;
     height: 7.5rem;
     color: #FEE7B3;
@@ -117,7 +118,7 @@ export default {
     background-size: 100% 100%
   }
   .name {
-    margin-top: 1.6rem;
+    margin-top: 0.8rem;
     height: 0.26rem;
     line-height: 0.26rem;
   }
